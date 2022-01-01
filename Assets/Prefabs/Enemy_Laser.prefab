@@ -39,6 +39,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 432765062757587154}
     m_Modifications:
+    - target: {fileID: -2906086867354925790, guid: d37e5a55fd2cddf47ad003133f2795f7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3442852174829345119, guid: d37e5a55fd2cddf47ad003133f2795f7, type: 3}
       propertyPath: m_Name
       value: Left_Laser
@@ -101,6 +105,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 432765062757587154}
     m_Modifications:
+    - target: {fileID: -2906086867354925790, guid: d37e5a55fd2cddf47ad003133f2795f7, type: 3}
+      propertyPath: m_Size.x
+      value: 1.6417419
+      objectReference: {fileID: 0}
+    - target: {fileID: -2906086867354925790, guid: d37e5a55fd2cddf47ad003133f2795f7, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.6319205
+      objectReference: {fileID: 0}
     - target: {fileID: 3442852174829345119, guid: d37e5a55fd2cddf47ad003133f2795f7, type: 3}
       propertyPath: m_Name
       value: Right_Laser

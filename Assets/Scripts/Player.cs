@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public GameObject LaserPrefab;
+    [SerializeField]
     float _speed = 3.5f;
     float _normSpeed = 3.5f;
     float _thrusterSpeed = 6f;
@@ -17,6 +18,9 @@ public class Player : MonoBehaviour
     private bool _tripleShotActive = false;
     private bool _speedActive = false;
     private bool _shieldsActive = false;
+    private int _shieldLives;
+    [SerializeField]
+    private SpriteRenderer _shield;
     [SerializeField]
     private GameObject _shieldVisualizer;
     [SerializeField]
@@ -27,8 +31,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _leftDamage;
     [SerializeField]
-    private AudioClip _laserSound;
-   
+    private AudioClip _laserSound;  
     private AudioSource _audioSource;
 
     
@@ -41,8 +44,9 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
+        _shield = GameObject.Find("Shield").GetComponent<SpriteRenderer>();
 
-        
+
 
         if (_spawnManager == null)
         {
@@ -114,9 +118,25 @@ public class Player : MonoBehaviour
     {
         if (_shieldsActive == true)
         {
-            _shieldsActive = false;
-            _shieldVisualizer.SetActive(false);
-            return;
+            if (_shieldLives == 2)
+            {
+                _shieldLives--;
+                _shield.color = Color.magenta;
+                return;
+            }
+
+            else if (_shieldLives == 1)
+            {
+                _shieldLives--;
+                _shield.color = Color.red;
+                return;
+            }
+            else
+            {
+                _shieldsActive = false;
+                _shieldVisualizer.SetActive(false);
+                return;
+            }
         }
         _lives -= 1;
 
@@ -177,8 +197,9 @@ public class Player : MonoBehaviour
     public void SpeedBoostActive()
     {
         _speedActive = true;
-        StartCoroutine(SpeedBoostPowerdown());
         _speed *= _speedMultiplier;
+        StartCoroutine(SpeedBoostPowerdown());
+ 
     }
 
     IEnumerator SpeedBoostPowerdown()
@@ -191,7 +212,9 @@ public class Player : MonoBehaviour
     public void ShieldsActive()
     {
         _shieldsActive = true;
+        _shieldLives = 2;
         _shieldVisualizer.SetActive(true);
+        _shield.color = Color.white;
     }
 
     public void Score()
@@ -202,12 +225,26 @@ public class Player : MonoBehaviour
 
     public void ThrustersActive()
     {
-        _speed = _thrusterSpeed;
+        if (_speedActive == true)
+        {
+            return;
+        }
+        else
+        {
+            _speed = _thrusterSpeed;
+        }
     }
 
     public void ThrustersInactive()
     {
-        _speed = _normSpeed;
+        if (_speedActive == true)
+        {
+            return;
+        }
+        else
+        {
+            _speed = _normSpeed;
+        }
     }
 
 
