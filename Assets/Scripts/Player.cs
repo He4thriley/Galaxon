@@ -6,7 +6,8 @@ public class Player : MonoBehaviour
 {
     public GameObject LaserPrefab;
     float _speed = 3.5f;
-
+    float _normSpeed = 3.5f;
+    float _thrusterSpeed = 6f;
     float _speedMultiplier = 2f;
     public GameObject TriplePrefab;
     private int _lives = 3;
@@ -89,7 +90,7 @@ public class Player : MonoBehaviour
 
 
             transform.Translate(direction * _speed * Time.deltaTime);
-        
+         
 
         if (transform.position.y >= 0)
         {
@@ -199,6 +200,15 @@ public class Player : MonoBehaviour
         _uiManager.UpdateScore(_score);
     }
 
+    public void ThrustersActive()
+    {
+        _speed = _thrusterSpeed;
+    }
+
+    public void ThrustersInactive()
+    {
+        _speed = _normSpeed;
+    }
 
 
 }
