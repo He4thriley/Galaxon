@@ -33,18 +33,21 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip _laserSound;  
     private AudioSource _audioSource;
+    [SerializeField]
+    private int _ammo;
 
     
     // Start is called before the first frame update
     
     void Start()
     {
-
+        _ammo = 15;
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
         _shield = GameObject.Find("Shield").GetComponent<SpriteRenderer>();
+        
 
 
 
@@ -75,7 +78,6 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && _canFire < Time.time)
         {
             _canFire = Time.time + _fireRate;
-
             FireLaser();
         }
 
@@ -170,16 +172,32 @@ public class Player : MonoBehaviour
 
     public void FireLaser ()
     {
-        if (_tripleShotActive == true)
+        if (_ammo > 0)
         {
-            Instantiate(TriplePrefab, transform.position, Quaternion.identity);
+            if (_tripleShotActive == true)
+            {
+                Instantiate(TriplePrefab, transform.position, Quaternion.identity);
+                
+            }
+            else
+            {
+                Instantiate(LaserPrefab, transform.position + new Vector3(0, 0.4f, 0), Quaternion.identity);
+                
+            }
+            AmmoShot();
+            _audioSource.Play();
         }
-        else
-        {
-            Instantiate(LaserPrefab, transform.position + new Vector3(0, 0.4f, 0), Quaternion.identity);
-        }
+    }
+    public void RefillAmmo()
+    {
+        _ammo = 15;
+        _uiManager.UpdateAmmo(_ammo);
+    }
 
-        _audioSource.Play();
+    public void AmmoShot()
+    {
+        _ammo--;
+        _uiManager.UpdateAmmo(_ammo);
     }
 
     public void TripleShotActive()

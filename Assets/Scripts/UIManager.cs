@@ -18,11 +18,15 @@ public class UIManager : MonoBehaviour
     private Text _restartText;
     [SerializeField]
     bool _restartOkay = false;
+    [SerializeField]
+    private Text _ammoText;
+
     // Start is called before the first frame update
     void Start()
     {
         
         _scoreText.text = "Score: " + 0;
+        _ammoText.text = "Ammo: " + 15;
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
     }
@@ -49,6 +53,11 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + playerScore.ToString();
     }
     
+    public void UpdateAmmo(int ammo)
+    {
+        _ammoText.text = "Ammo: " + ammo;
+    }
+
     public void UpdateLives(int currentLives)
     {
         _livesIMG.sprite = _livesSprite[currentLives];
