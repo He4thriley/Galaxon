@@ -55,7 +55,7 @@ public class Thrusters : MonoBehaviour
 
     public void ThrustersUse()
     {
-       _thrusterValue -= 1f;
+       _thrusterValue -= 0.5f;
        if (_thrusterValue < 1)
        {
             _thrustersOn = false;
@@ -78,7 +78,7 @@ public class Thrusters : MonoBehaviour
 
         _thrusterSlider.image.color = Color.red;
         _thrusterImage.color = Color.red;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.7f);
         _thrustersOn = true;
         _thrusterSlider.image.color = Color.cyan;
         _thrusterImage.color = Color.cyan;

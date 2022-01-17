@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     private AudioSource _audioSource;
     [SerializeField]
     private int _ammo;
+    [SerializeField]
+    private CameraShake _camera;
 
     
     // Start is called before the first frame update
@@ -47,6 +49,7 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
         _shield = GameObject.Find("Shield").GetComponent<SpriteRenderer>();
+        _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         
 
 
@@ -143,6 +146,7 @@ public class Player : MonoBehaviour
         _lives -= 1;
 
         _uiManager.UpdateLives(_lives);
+        StartCoroutine(_camera.CameraShakeCoroutine(0.5f, 0.25f));
 
         if (_lives == 3)
         {
@@ -192,6 +196,30 @@ public class Player : MonoBehaviour
     {
         _ammo = 15;
         _uiManager.UpdateAmmo(_ammo);
+    }
+
+    public void HealthUp()
+    {
+        if (_lives < 3)
+        {
+            _lives += 1;
+        }
+        _uiManager.UpdateLives(_lives);
+        if (_lives == 3)
+        {
+            _rightDamage.SetActive(false);
+            _leftDamage.SetActive(false);
+        }
+
+        else if (_lives == 2)
+        {
+            _rightDamage.SetActive(true);
+            _leftDamage.SetActive(false);
+        }
+        else if (_lives == 1)
+        {
+            _leftDamage.SetActive(true);
+        }
     }
 
     public void AmmoShot()
