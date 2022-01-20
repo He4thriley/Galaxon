@@ -54,6 +54,9 @@ public class Powerup : MonoBehaviour
                     case 4:
                         player.HealthUp();
                         break;
+                    case 5:
+                        player.BeamActive();
+                        break;
                     default:
                         break;
                 }

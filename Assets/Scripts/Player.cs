@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private float _canFire = -1.0f;
     private float _fireRate = 0.3f;
     private bool _tripleShotActive = false;
+    private bool _beamActive = false;
     private bool _speedActive = false;
     private bool _shieldsActive = false;
     private int _shieldLives;
@@ -23,6 +24,8 @@ public class Player : MonoBehaviour
     private SpriteRenderer _shield;
     [SerializeField]
     private GameObject _shieldVisualizer;
+    [SerializeField]
+    private GameObject _beam;
     [SerializeField]
     private int _score;
     private UIManager _uiManager;
@@ -49,6 +52,7 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
         _shield = GameObject.Find("Shield").GetComponent<SpriteRenderer>();
+        _beam = GameObject.Find("BeamPrefab");
         _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         
 
@@ -77,11 +81,17 @@ public class Player : MonoBehaviour
     void Update()
     {
         playerMovement();
-
-        if (Input.GetKeyDown(KeyCode.Space) && _canFire < Time.time)
+        if (_beamActive == false)
         {
-            _canFire = Time.time + _fireRate;
-            FireLaser();
+            if (Input.GetKeyDown(KeyCode.Space) && _canFire < Time.time)
+            {
+                _canFire = Time.time + _fireRate;
+                FireLaser();
+            }
+        }
+        else if (_beamActive == true);
+        {
+
         }
 
 
@@ -238,6 +248,20 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _tripleShotActive = false;
+    }
+
+    public void BeamActive()
+    {
+        _beamActive = true;
+        _beam.SetActive(true);
+        StartCoroutine(BeamPowerDown());
+    }
+
+    IEnumerator BeamPowerDown()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _beamActive = false;
+        _beam.SetActive(false);
     }
 
     public void SpeedBoostActive()

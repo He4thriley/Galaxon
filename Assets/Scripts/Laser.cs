@@ -37,7 +37,7 @@ public class Laser : MonoBehaviour
     void MoveDown()
     {
         transform.Translate(Vector3.down * Time.deltaTime * _speed);
-        if (transform.position.y > 8)
+        if (transform.position.y < -5)
         {
             Destroy(this.gameObject);
         }
