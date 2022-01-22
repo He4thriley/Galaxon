@@ -11,9 +11,10 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     private float _fireRate = 3f;
-    private float _canFire = -1;
+    private float _canFire = 1;
     [SerializeField]
     private int enemyID;
+    private bool isEnemyLaser;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,9 @@ public class Enemy : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<Player>();
         _anim = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
-        
+ 
+
+
     }
 
     // Update is called once per frame
@@ -47,9 +50,11 @@ public class Enemy : MonoBehaviour
                 {
                 lasers[i].AssignEnemyLaser();
                 }
+
             }
             break;
             case 1:
+                
                 transform.Translate(Vector3.up * Time.deltaTime);
                     transform.Translate(Vector3.right * _speed * Time.deltaTime);
                 if (transform.position.y < -5f)
@@ -57,19 +62,23 @@ public class Enemy : MonoBehaviour
                     transform.position = new Vector3(Random.Range(-8f, 8f), 7, 0);
                 }
 
-                if (Time.time > _canFire)
+                if (Time.time > _canFire && transform.position.x > -9)
                 {
                     _fireRate = Random.Range(3f, 7f);
                     _canFire = Time.time + _fireRate;
                     GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                  
                     Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
                     for (int i = 0; i < lasers.Length; i++)
                     {
                         lasers[i].AssignEnemyLaser();
                     }
+                    
+                   
                 }
                 break;
             case 2:
+                
                 transform.Translate(Vector3.up * Time.deltaTime);
                 transform.Translate(Vector3.left * _speed * Time.deltaTime);
                 if (transform.position.y < -5f)
@@ -77,16 +86,19 @@ public class Enemy : MonoBehaviour
                     transform.position = new Vector3(Random.Range(-8f, 8f), 7, 0);
                 }
 
-                if (Time.time > _canFire)
+                if (Time.time > _canFire && transform.position.x <9)
                 {
                     _fireRate = Random.Range(3f, 7f);
                     _canFire = Time.time + _fireRate;
                     GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                  
                     Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
                     for (int i = 0; i < lasers.Length; i++)
                     {
                         lasers[i].AssignEnemyLaser();
                     }
+                    
+                   
                 }
                 break;
             default:
@@ -98,6 +110,7 @@ public class Enemy : MonoBehaviour
         }
 
     }
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {

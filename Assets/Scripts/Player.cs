@@ -40,12 +40,18 @@ public class Player : MonoBehaviour
     private int _ammo;
     [SerializeField]
     private CameraShake _camera;
+    [SerializeField]
+    private GameObject _player;
+    [SerializeField]
+    private EnemyHoming _deactivate;
+    private bool playerDeath;
 
     
     // Start is called before the first frame update
     
     void Start()
     {
+        playerDeath = false;
         _ammo = 15;
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
@@ -54,6 +60,8 @@ public class Player : MonoBehaviour
         _shield = GameObject.Find("Shield").GetComponent<SpriteRenderer>();
         _beam = GameObject.Find("BeamPrefab");
         _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
+    
+        _deactivate = GameObject.Find("Diamond").GetComponent<EnemyHoming>();
         
 
 
@@ -109,24 +117,26 @@ public class Player : MonoBehaviour
 
 
             transform.Translate(direction * _speed * Time.deltaTime);
-         
 
-        if (transform.position.y >= 0)
+        if (playerDeath == false)
         {
-            transform.position = new Vector3(transform.position.x, 0, 0);
-        }
-        else if (transform.position.y <= -3.8f)
-        {
-            transform.position = new Vector3(transform.position.x, -3.8f, 0);
-        }
+            if (transform.position.y >= 0)
+            {
+                transform.position = new Vector3(transform.position.x, 0, 0);
+            }
+            else if (transform.position.y <= -3.8f)
+            {
+                transform.position = new Vector3(transform.position.x, -3.8f, 0);
+            }
 
-        if (transform.position.x > 11.3f)
-        {
-            transform.position = new Vector3(-11.3f, transform.position.y, 0);
-        }
-        else if (transform.position.x < -11.3f)
-        {
-            transform.position = new Vector3(11.3f, transform.position.y, 0);
+            if (transform.position.x > 11.3f)
+            {
+                transform.position = new Vector3(-11.3f, transform.position.y, 0);
+            }
+            else if (transform.position.x < -11.3f)
+            {
+                transform.position = new Vector3(11.3f, transform.position.y, 0);
+            }
         }
     }
     public void Damage ()
@@ -178,9 +188,13 @@ public class Player : MonoBehaviour
 
         if (_lives < 1)
         {
+            playerDeath = true;
+            transform.position = new Vector3(0f, 25f, 0f);
+            _deactivate.playerExists = false;
             _spawnManager.OnPlayerDeath();
-            Destroy(this.gameObject);
 
+            
+            
         }
     }
 

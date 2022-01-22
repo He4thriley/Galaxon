@@ -41,19 +41,20 @@ public class SpawnManager : MonoBehaviour
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
 
-            Vector3 posToSpawnRight = new Vector3(-11.3f, Random.Range(-5, 7), 0);
+            Vector3 posToSpawnRight = new Vector3(-11.3f, Random.Range(-2, 7), 0);
             GameObject rightEnemy = Instantiate(_rightEnemy, posToSpawnRight, Quaternion.identity);
             rightEnemy.transform.parent = _enemyContainer.transform;
 
-            Vector3 posToSpawnLeft = new Vector3(11.3f, Random.Range(-5, 7), 0);
+            Vector3 posToSpawnLeft = new Vector3(11.3f, Random.Range(-2, 7), 0);
             GameObject leftEnemy = Instantiate(_leftEnemy, posToSpawnLeft, Quaternion.identity);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(6f);
 
         }
     }
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
+        Destroy(this.gameObject);
     }
 
     IEnumerator SpawnPowerupRoutine()
