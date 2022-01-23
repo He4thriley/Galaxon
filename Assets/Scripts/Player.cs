@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _leftDamage;
     [SerializeField]
-    private AudioClip _laserSound;  
+    private AudioClip _laserSound;
     private AudioSource _audioSource;
     [SerializeField]
     private int _ammo;
@@ -45,10 +46,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private EnemyHoming _deactivate;
     private bool playerDeath;
+    public Thrusters _thrusters;
 
-    
+
     // Start is called before the first frame update
-    
+
     void Start()
     {
         playerDeath = false;
@@ -60,9 +62,9 @@ public class Player : MonoBehaviour
         _shield = GameObject.Find("Shield").GetComponent<SpriteRenderer>();
         _beam = GameObject.Find("BeamPrefab");
         _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
-    
+        _thrusters = GameObject.Find("Thruster_Slider").GetComponent<Thrusters>();
         _deactivate = GameObject.Find("Diamond").GetComponent<EnemyHoming>();
-        
+
 
 
 
@@ -79,7 +81,8 @@ public class Player : MonoBehaviour
             Debug.LogError("the player audio source is NULL");
         }
 
-        else {
+        else
+        {
             _audioSource.clip = _laserSound;
         }
 
@@ -97,7 +100,7 @@ public class Player : MonoBehaviour
                 FireLaser();
             }
         }
-        else if (_beamActive == true);
+        else if (_beamActive == true) ;
         {
 
         }
@@ -109,14 +112,14 @@ public class Player : MonoBehaviour
     }
     void playerMovement()
     {
-        
-        
+
+
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
 
-            transform.Translate(direction * _speed * Time.deltaTime);
+        transform.Translate(direction * _speed * Time.deltaTime);
 
         if (playerDeath == false)
         {
@@ -139,7 +142,7 @@ public class Player : MonoBehaviour
             }
         }
     }
-    public void Damage ()
+    public void Damage()
     {
         if (_shieldsActive == true)
         {
@@ -193,24 +196,24 @@ public class Player : MonoBehaviour
             _deactivate.playerExists = false;
             _spawnManager.OnPlayerDeath();
 
-            
-            
+
+
         }
     }
 
-    public void FireLaser ()
+    public void FireLaser()
     {
         if (_ammo > 0)
         {
             if (_tripleShotActive == true)
             {
                 Instantiate(TriplePrefab, transform.position, Quaternion.identity);
-                
+
             }
             else
             {
                 Instantiate(LaserPrefab, transform.position + new Vector3(0, 0.4f, 0), Quaternion.identity);
-                
+
             }
             AmmoShot();
             _audioSource.Play();
@@ -283,7 +286,7 @@ public class Player : MonoBehaviour
         _speedActive = true;
         _speed *= _speedMultiplier;
         StartCoroutine(SpeedBoostPowerdown());
- 
+
     }
 
     IEnumerator SpeedBoostPowerdown()
@@ -331,5 +334,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void SlowActive()
+    {
+        _speedActive = true;
+        _speed /= 2;
+        StartCoroutine(SlowPowerdown());
+        StartCoroutine(_thrusters.ThrustersPowerOff());
+    }
 
+    IEnumerator SlowPowerdown()
+    {
+        yield return new WaitForSeconds(4.0f);
+        _speedActive = false;
+        _speed *= 2;
+
+
+
+
+    }
 }

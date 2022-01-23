@@ -73,12 +73,23 @@ public class Thrusters : MonoBehaviour
     }
 
 
-    IEnumerator ThrustersOff()
+    public IEnumerator ThrustersOff()
     {
 
         _thrusterSlider.image.color = Color.red;
         _thrusterImage.color = Color.red;
         yield return new WaitForSeconds(1.7f);
+        _thrustersOn = true;
+        _thrusterSlider.image.color = Color.cyan;
+        _thrusterImage.color = Color.cyan;
+
+    }
+    public IEnumerator ThrustersPowerOff()
+    {
+
+        _thrusterSlider.image.color = Color.red;
+        _thrusterImage.color = Color.red;
+        yield return new WaitForSeconds(4f);
         _thrustersOn = true;
         _thrusterSlider.image.color = Color.cyan;
         _thrusterImage.color = Color.cyan;
