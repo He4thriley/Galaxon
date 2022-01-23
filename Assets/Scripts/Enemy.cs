@@ -15,6 +15,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private int enemyID;
     private bool isEnemyLaser;
+    [SerializeField]
+    private int _enemyShieldPercent;
+    [SerializeField]
+    private GameObject _enemyShield;
+    private bool _shieldIsOnEnemy;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +27,11 @@ public class Enemy : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<Player>();
         _anim = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
- 
+        if (Random.Range(1, 101) < _enemyShieldPercent)
+        {
+            _enemyShield.SetActive(true);
+            _shieldIsOnEnemy = true;
+        }
 
 
     }
@@ -50,6 +59,7 @@ public class Enemy : MonoBehaviour
                 {
                 lasers[i].AssignEnemyLaser();
                 }
+
 
             }
             break;
@@ -134,6 +144,12 @@ public class Enemy : MonoBehaviour
 
                     Destroy(other.gameObject);
 
+                    if (_shieldIsOnEnemy == true)
+                    {
+                        _enemyShield.SetActive(false);
+                        return;
+                    }
+
                     if (_player != null)
                     {
                         _player.Score();
@@ -175,6 +191,11 @@ public class Enemy : MonoBehaviour
                 {
 
                     Destroy(other.gameObject);
+                    if (_shieldIsOnEnemy == true)
+                    {
+                        _enemyShield.SetActive(false);
+                        return;
+                    }
 
                     if (_player != null)
                     {
@@ -217,6 +238,12 @@ public class Enemy : MonoBehaviour
                 {
 
                     Destroy(other.gameObject);
+
+                    if (_shieldIsOnEnemy == true)
+                    {
+                        _enemyShield.SetActive(false);
+                        return;
+                    }
 
                     if (_player != null)
                     {
