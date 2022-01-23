@@ -40,6 +40,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _ammo;
     [SerializeField]
+    private int _maxAmmo;
+    [SerializeField]
     private CameraShake _camera;
     [SerializeField]
     private GameObject _player;
@@ -54,6 +56,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerDeath = false;
+        _maxAmmo = 15;
         _ammo = 15;
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
@@ -64,6 +67,7 @@ public class Player : MonoBehaviour
         _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _thrusters = GameObject.Find("Thruster_Slider").GetComponent<Thrusters>();
         _deactivate = GameObject.Find("Diamond").GetComponent<EnemyHoming>();
+        MaxAmmo();
 
 
 
@@ -221,7 +225,7 @@ public class Player : MonoBehaviour
     }
     public void RefillAmmo()
     {
-        _ammo = 15;
+        _ammo = _maxAmmo;
         _uiManager.UpdateAmmo(_ammo);
     }
 
@@ -254,6 +258,13 @@ public class Player : MonoBehaviour
         _ammo--;
         _uiManager.UpdateAmmo(_ammo);
     }
+
+    public void MaxAmmo()
+    {
+        _uiManager.UpdateMaxAmmo(_maxAmmo);
+    }
+
+
 
     public void TripleShotActive()
     {

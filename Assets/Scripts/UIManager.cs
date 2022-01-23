@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _ammoText;
     [SerializeField]
+    private Text _maxAmmoText;
+    [SerializeField]
     private Slider _thrusterSlider;
 
     // Start is called before the first frame update
@@ -29,6 +31,7 @@ public class UIManager : MonoBehaviour
         
         _scoreText.text = "Score: " + 0;
         _ammoText.text = "Ammo: " + 15;
+        _maxAmmoText.text = "/" + 15;
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
     }
@@ -57,7 +60,12 @@ public class UIManager : MonoBehaviour
     
     public void UpdateAmmo(int ammo)
     {
-        _ammoText.text = "Ammo: " + ammo;
+        _ammoText.text = "Ammo:"  + ammo;
+    }
+
+    public void UpdateMaxAmmo(int maxAmmo)
+    {
+        _maxAmmoText.text = "/" + maxAmmo;
     }
 
     public void UpdateLives(int currentLives)
