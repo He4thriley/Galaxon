@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField]
     private float _speed = 4f;
+    private float _rotateSpeed = 50f;
     private Player _player;
     private Animator _anim;
     private AudioSource _audioSource;
@@ -20,10 +22,14 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private GameObject _enemyShield;
     private bool _shieldIsOnEnemy;
+    [SerializeField]
+    private float _playerDetectRange;
+    public Rigidbody2D rigidBody;
+
     // Start is called before the first frame update
     void Start()
     {
-
+      
         _player = GameObject.Find("Player").GetComponent<Player>();
         _anim = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
@@ -111,6 +117,28 @@ public class Enemy : MonoBehaviour
                    
                 }
                 break;
+            case 3:
+                RamPlayer();
+              
+                if (transform.position.y < -5f|| transform.position.x > 11.3f || transform.position.x < -11.3f)
+                {
+                    Destroy(this.gameObject);
+                }
+
+                if (Time.time > _canFire)
+                {
+                    _fireRate = Random.Range(3f, 7f);
+                    _canFire = Time.time + _fireRate;
+                    GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+                    Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+                    for (int i = 0; i < lasers.Length; i++)
+                    {
+                        lasers[i].AssignEnemyLaser();
+                    }
+
+
+                }
+                break;
             default:
                 break;
 
@@ -119,6 +147,33 @@ public class Enemy : MonoBehaviour
 
         }
 
+    }
+
+    private void RamPlayer()
+    {
+        if (Vector3.Distance(transform.position, _player.transform.position) < _playerDetectRange)
+        {
+            
+
+            Vector2 direction = (Vector2)_player.transform.position - rigidBody.position;
+            direction.Normalize();
+            float rotateAmount = Vector3.Cross(direction, transform.up).z;
+            if (rotateAmount < 0.5)
+            {
+                rigidBody.angularVelocity = _rotateSpeed * rotateAmount;
+            }
+            // transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime);
+            // transform.position = Vector3. * _speed * Time.deltaTime;
+            Vector3 transformDown = transform.up * (-1);
+            rigidBody.velocity = transformDown * _speed;
+
+        }
+        else
+        {
+           // transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime);
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
+           
+        }
     }
 
 
@@ -164,6 +219,10 @@ public class Enemy : MonoBehaviour
                 }
                 if (other.tag == "Beam")
                 {
+                    if (_shieldIsOnEnemy == true)
+                    {
+                        _enemyShield.SetActive(false);
+                    }
                     if (_player != null)
                     {
                         _player.Score();
@@ -211,6 +270,10 @@ public class Enemy : MonoBehaviour
                 }
                 if (other.tag == "Beam")
                 {
+                    if (_shieldIsOnEnemy == true)
+                    {
+                        _enemyShield.SetActive(false);
+                    }
                     if (_player != null)
                     {
                         _player.Score();
@@ -259,6 +322,10 @@ public class Enemy : MonoBehaviour
                 }
                 if (other.tag == "Beam")
                 {
+                    if (_shieldIsOnEnemy == true)
+                    {
+                        _enemyShield.SetActive(false);
+                    }
                     if (_player != null)
                     {
                         _player.Score();

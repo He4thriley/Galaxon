@@ -359,7 +359,7 @@ Transform:
   m_GameObject: {fileID: 696729635288038754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.75, y: -0.25, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1.0441}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1.0441}
   m_Children:
   - {fileID: 696729635078849257}
   - {fileID: 696729635513870119}
@@ -586,7 +586,11 @@ MonoBehaviour:
   _leftDamage: {fileID: 696729634740853667}
   _laserSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _ammo: 0
+  _maxAmmo: 0
   _camera: {fileID: 0}
+  _player: {fileID: 696729635288038754}
+  _deactivate: {fileID: 6708714953427293449, guid: a1207eea3a5efcf4d8b2ca58b9755c8e, type: 3}
+  _thrusters: {fileID: 696729635288038685}
 --- !u!114 &696729635288038685
 MonoBehaviour:
   m_ObjectHideFlags: 0
