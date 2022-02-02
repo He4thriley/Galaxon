@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviour
     public GameObject _enemyPrefab;
     public GameObject _rightEnemy;
     public GameObject _leftEnemy;
+    public GameObject _divebomb;
     public GameObject _enemyContainer;
     [SerializeField]
     private GameObject[]  powerups;

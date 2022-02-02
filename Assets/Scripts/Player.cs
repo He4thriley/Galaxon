@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
         _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _thrusters = GameObject.Find("Thruster_Slider").GetComponent<Thrusters>();
         _deactivate = GameObject.Find("Diamond").GetComponent<EnemyHoming>();
-        MaxAmmo();
+      //  MaxAmmo();
 
 
 
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
 
         }
 
-
+        _uiManager.UpdateMaxAmmo(_maxAmmo);
 
 
 
@@ -261,7 +261,7 @@ public class Player : MonoBehaviour
 
     public void MaxAmmo()
     {
-        _uiManager.UpdateMaxAmmo(_maxAmmo);
+      _uiManager.UpdateMaxAmmo(_maxAmmo);
     }
 
 
@@ -358,9 +358,5 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(4.0f);
         _speedActive = false;
         _speed *= 2;
-
-
-
-
     }
 }

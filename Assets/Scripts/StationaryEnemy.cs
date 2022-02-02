@@ -12,12 +12,22 @@ public class StationaryEnemy : MonoBehaviour
     private GameObject _laserPrefab;
     private float _fireRate = 3f;
     private float _canFire = -1;
+    [SerializeField]
+    private int _enemyShieldPercent;
+    [SerializeField]
+    private GameObject _enemyShield;
+    private bool _shieldIsOnEnemy;
     // Start is called before the first frame update
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
         _anim = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
+        if (Random.Range(1, 101) < _enemyShieldPercent)
+        {
+            _enemyShield.SetActive(true);
+            _shieldIsOnEnemy = true;
+        }
     }
 
     // Update is called once per frame
@@ -54,6 +64,12 @@ public class StationaryEnemy : MonoBehaviour
         if (other.tag == "Laser")
         {
             Destroy(other.gameObject);
+            if (_shieldIsOnEnemy == true)
+            {
+                _enemyShield.SetActive(false);
+                _shieldIsOnEnemy = false;
+                return;
+            }
 
             if (_player != null)
             {

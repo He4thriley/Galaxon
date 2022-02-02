@@ -25,11 +25,17 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float _playerDetectRange;
     public Rigidbody2D rigidBody;
+    private bool _ramEnemyAlive;
+    [SerializeField]
+    private int _dodgeChancePercent;
+    
+    
 
     // Start is called before the first frame update
     void Start()
     {
       
+        _ramEnemyAlive = true;
         _player = GameObject.Find("Player").GetComponent<Player>();
         _anim = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
@@ -45,6 +51,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         switch(enemyID)
         {
             case 0:
@@ -151,28 +158,31 @@ public class Enemy : MonoBehaviour
 
     private void RamPlayer()
     {
-        if (Vector3.Distance(transform.position, _player.transform.position) < _playerDetectRange)
+        if (_ramEnemyAlive == true)
         {
-            
-
-            Vector2 direction = (Vector2)_player.transform.position - rigidBody.position;
-            direction.Normalize();
-            float rotateAmount = Vector3.Cross(direction, transform.up).z;
-            if (rotateAmount < 0.5)
+            if (Vector3.Distance(transform.position, _player.transform.position) < _playerDetectRange)
             {
-                rigidBody.angularVelocity = _rotateSpeed * rotateAmount;
-            }
-            // transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime);
-            // transform.position = Vector3. * _speed * Time.deltaTime;
-            Vector3 transformDown = transform.up * (-1);
-            rigidBody.velocity = transformDown * _speed;
 
-        }
-        else
-        {
-           // transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime);
-            transform.Translate(Vector3.down * _speed * Time.deltaTime);
-           
+
+                Vector2 direction = (Vector2)_player.transform.position - rigidBody.position;
+                direction.Normalize();
+                float rotateAmount = Vector3.Cross(direction, transform.up).z;
+                if (rotateAmount < 0.5)
+                {
+                    rigidBody.angularVelocity = _rotateSpeed * rotateAmount;
+                }
+                // transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime);
+                // transform.position = Vector3. * _speed * Time.deltaTime;
+                Vector3 transformDown = transform.up * (-1);
+                rigidBody.velocity = transformDown * _speed;
+
+            }
+            else
+            {
+                // transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime);
+                transform.Translate(Vector3.down * _speed * Time.deltaTime);
+
+            }
         }
     }
 
@@ -202,6 +212,7 @@ public class Enemy : MonoBehaviour
                     if (_shieldIsOnEnemy == true)
                     {
                         _enemyShield.SetActive(false);
+                        _shieldIsOnEnemy = false;
                         return;
                     }
 
@@ -219,10 +230,7 @@ public class Enemy : MonoBehaviour
                 }
                 if (other.tag == "Beam")
                 {
-                    if (_shieldIsOnEnemy == true)
-                    {
-                        _enemyShield.SetActive(false);
-                    }
+                    
                     if (_player != null)
                     {
                         _player.Score();
@@ -253,6 +261,7 @@ public class Enemy : MonoBehaviour
                     if (_shieldIsOnEnemy == true)
                     {
                         _enemyShield.SetActive(false);
+                        _shieldIsOnEnemy = false;
                         return;
                     }
 
@@ -305,6 +314,7 @@ public class Enemy : MonoBehaviour
                     if (_shieldIsOnEnemy == true)
                     {
                         _enemyShield.SetActive(false);
+                        _shieldIsOnEnemy = false;
                         return;
                     }
 
@@ -338,9 +348,105 @@ public class Enemy : MonoBehaviour
 
                 }
                 break;
+            case 3:
+                
+                if (other.tag == "Player")
+                {
+                    _ramEnemyAlive = false;
+                    other.transform.GetComponent<Player>().Damage();
+                    _anim.SetTrigger("DivebombDeath");
+                    _speed = 0;
+                    _audioSource.Play();
+                    Destroy(GetComponent<Collider2D>());
+                    Destroy(this.gameObject, 3f);
+
+                }
+                if (other.tag == "Laser")
+                {
+                    _ramEnemyAlive = false;
+                    Destroy(other.gameObject);
+
+                    if (_shieldIsOnEnemy == true)
+                    {
+                        _enemyShield.SetActive(false);
+                        _shieldIsOnEnemy = false;
+                        return;
+                    }
+
+                    if (_player != null)
+                    {
+                        _player.Score();
+                    }
+
+                    _anim.SetTrigger("DivebombDeath");
+                    _speed = 0;
+                    _audioSource.Play();
+                    Destroy(GetComponent<Collider2D>());
+                    Destroy(this.gameObject, 3f);
+
+                }
+                if (other.tag == "Beam")
+                {
+                    _ramEnemyAlive = false;
+                    if (_shieldIsOnEnemy == true)
+                    {
+                        _enemyShield.SetActive(false);
+                    }
+                    if (_player != null)
+                    {
+                        _player.Score();
+                    }
+                    _anim.SetTrigger("DivebombDeath");
+                    _speed = 0;
+                    _audioSource.Play();
+                    Destroy(GetComponent<Collider2D>());
+                    Destroy(this.gameObject, 3f);
+
+                }
+                break;
             default:
                 break;
         }
 
         }
+
+    public void FireAtPowerup()
+    {
+        GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+        Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+        for (int i = 0; i < lasers.Length; i++)
+        {
+            lasers[i].AssignEnemyLaser();
+        }
+    }
+    public void FireUpAtPlayer()
+    {
+        GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+        Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+        for (int i = 0; i < lasers.Length; i++)
+        {
+            lasers[i].LaserUpAtPlayer();
+        }
+
+
+    }
+
+    public void EnemyDodge()
+    {
+        if (Random.Range(1, 101) < _dodgeChancePercent)
+        {
+            int leftright = Random.Range(1, 101);
+            if (leftright < 50)
+            {
+                transform.position += Vector3.left * Time.deltaTime * 40f;
+                transform.position += Vector3.up * Time.deltaTime * 40f;
+            }
+            else
+            {
+                transform.position += Vector3.right * Time.deltaTime * 40f;
+                transform.position += Vector3.up * Time.deltaTime * 40f;
+            }
+        }
+    }
+
 }

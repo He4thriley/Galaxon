@@ -6,19 +6,21 @@ public class Laser : MonoBehaviour
 {
     private float _speed = 8f;
     private bool _isEnemyLaser = false;
+    public bool _upEnemyLaser = false;
     // Start is called before the first frame update
     void Start()
     {
-        
+             _upEnemyLaser = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_isEnemyLaser == false)
+        if (_isEnemyLaser == false || _upEnemyLaser == true)
         {
             MoveUp();
         }
+       
         else
         {
             MoveDown();
@@ -46,6 +48,10 @@ public class Laser : MonoBehaviour
     public void AssignEnemyLaser()
     {
         _isEnemyLaser = true;
+    }
+    public void LaserUpAtPlayer()
+    {
+        _upEnemyLaser = true;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
