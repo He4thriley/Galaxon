@@ -9,6 +9,7 @@ TagManager:
   - Beam
   - EnemyLaser
   - Powerup
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

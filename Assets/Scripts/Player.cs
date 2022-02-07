@@ -49,7 +49,16 @@ public class Player : MonoBehaviour
     private EnemyHoming _deactivate;
     private bool playerDeath;
     public Thrusters _thrusters;
-
+    [SerializeField]
+    private WaveOne _waveOne;
+    [SerializeField]
+    private GameObject _waveTwo;
+    [SerializeField]
+    private GameObject _waveThree;
+    [SerializeField]
+    private GameObject _waveFour;
+    [SerializeField]
+    private GameObject _bossFight;
 
     // Start is called before the first frame update
 
@@ -67,6 +76,7 @@ public class Player : MonoBehaviour
         _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _thrusters = GameObject.Find("Thruster_Slider").GetComponent<Thrusters>();
         _deactivate = GameObject.Find("Diamond").GetComponent<EnemyHoming>();
+        _waveOne = GameObject.Find("WaveOne").GetComponent<WaveOne>();
       //  MaxAmmo();
 
 
@@ -319,6 +329,25 @@ public class Player : MonoBehaviour
     {
         _score += 10;
         _uiManager.UpdateScore(_score);
+        if (_score == 60)
+        {
+            _waveTwo.gameObject.SetActive(true);
+        }
+        _uiManager.UpdateScore(_score);
+        if (_score == 140)
+        {
+            _waveThree.gameObject.SetActive(true);
+        }
+        _uiManager.UpdateScore(_score);
+        if (_score == 180)
+        {
+            _waveFour.gameObject.SetActive(true);
+        }
+        if (_score == 240)
+        {
+            _bossFight.gameObject.SetActive(true);
+        }
+
     }
 
     public void ThrustersActive()

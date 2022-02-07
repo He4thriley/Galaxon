@@ -24,8 +24,9 @@ public class SpawnManager : MonoBehaviour
 
     public void StartSpawning()
     {
-        StartCoroutine(SpawnRoutine());
+        //StartCoroutine(SpawnRoutine());
         StartCoroutine(SpawnPowerupRoutine());
+        StartCoroutine(SpawnAmmoHealthRoutine());
     }
 
     // Update is called once per frame
@@ -60,16 +61,38 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerupRoutine()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(9.0f);
         while (_stopSpawning == false)
         {
             Vector3 postToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
-            int randomPowerUp = Random.Range(0, 7);
+            int randomPowerUp = Random.Range(0, 5);
 
             Instantiate(powerups[randomPowerUp], postToSpawn, Quaternion.identity);
             yield return new WaitForSeconds(Random.Range(6f, 9f));
           
            
+        }
+    }
+    IEnumerator SpawnAmmoHealthRoutine()
+    {
+        yield return new WaitForSeconds(16.0f);
+        while (_stopSpawning == false)
+        {
+            int ammohealth = Random.Range(1, 101);
+
+            Vector3 postToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            if (ammohealth < 66)
+            {
+                Instantiate(powerups[6], postToSpawn, Quaternion.identity);
+                yield return new WaitForSeconds(Random.Range(6f, 9f));
+            }
+            else
+            {
+                Instantiate(powerups[5], postToSpawn, Quaternion.identity);
+                yield return new WaitForSeconds(Random.Range(6f, 9f));
+            }
+
+
         }
     }
 

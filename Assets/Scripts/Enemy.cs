@@ -80,9 +80,9 @@ public class Enemy : MonoBehaviour
                 
                 transform.Translate(Vector3.up * Time.deltaTime);
                     transform.Translate(Vector3.right * _speed * Time.deltaTime);
-                if (transform.position.y < -5f)
+                if (transform.position.y > 9f)
                 {
-                    transform.position = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                    transform.position = new Vector3(-8f, Random.Range(-5f, 4f), 0);
                 }
 
                 if (Time.time > _canFire && transform.position.x > -9)
@@ -104,9 +104,9 @@ public class Enemy : MonoBehaviour
                 
                 transform.Translate(Vector3.up * Time.deltaTime);
                 transform.Translate(Vector3.left * _speed * Time.deltaTime);
-                if (transform.position.y < -5f)
+                if (transform.position.y > 9f)
                 {
-                    transform.position = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                    transform.position = new Vector3(8f, Random.Range(-5f, 4f), 0);
                 }
 
                 if (Time.time > _canFire && transform.position.x <9)
@@ -127,10 +127,7 @@ public class Enemy : MonoBehaviour
             case 3:
                 RamPlayer();
               
-                if (transform.position.y < -5f|| transform.position.x > 11.3f || transform.position.x < -11.3f)
-                {
-                    Destroy(this.gameObject);
-                }
+
 
                 if (Time.time > _canFire)
                 {
@@ -180,7 +177,11 @@ public class Enemy : MonoBehaviour
             else
             {
                 // transform.Rotate(Vector3.forward * _rotateSpeed * Time.deltaTime);
-                transform.Translate(Vector3.down * _speed * Time.deltaTime);
+                transform.Translate(Vector3.down * _speed * Time.deltaTime); 
+                if (transform.position.y < -5f)
+                {
+                    transform.position = new Vector3(Random.Range(-8f, 8f), 7, 0);
+                }
 
             }
         }
@@ -198,6 +199,7 @@ public class Enemy : MonoBehaviour
                 {
                     other.transform.GetComponent<Player>().Damage();
                     _anim.SetTrigger("OnEnemyDeath");
+                    _player.Score();
                     _speed = 0;
                     _audioSource.Play();
                     Destroy(GetComponent<Collider2D>());
@@ -248,6 +250,7 @@ public class Enemy : MonoBehaviour
                 {
                     other.transform.GetComponent<Player>().Damage();
                     _anim.SetTrigger("UpLeftDeath");
+                    _player.Score();
                     _speed = 0;
                     _audioSource.Play();
                     Destroy(GetComponent<Collider2D>());
@@ -300,6 +303,7 @@ public class Enemy : MonoBehaviour
                 {
                     other.transform.GetComponent<Player>().Damage();
                     _anim.SetTrigger("UpLeftDeath");
+                    _player.Score();
                     _speed = 0;
                     _audioSource.Play();
                     Destroy(GetComponent<Collider2D>());
@@ -356,6 +360,7 @@ public class Enemy : MonoBehaviour
                     other.transform.GetComponent<Player>().Damage();
                     _anim.SetTrigger("DivebombDeath");
                     _speed = 0;
+                    _player.Score();
                     _audioSource.Play();
                     Destroy(GetComponent<Collider2D>());
                     Destroy(this.gameObject, 3f);
