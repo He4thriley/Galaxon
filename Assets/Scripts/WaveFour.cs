@@ -15,12 +15,26 @@ public class WaveFour : MonoBehaviour
     public GameObject _enemyContainer;
     [SerializeField]
     private Text _waveFourText;
+    [SerializeField]
+    private Enemy _enemy;
+    [SerializeField]
+    private Enemy _upRightEnemy;
+    [SerializeField]
+    private Enemy _upLeftEnemy;
+    [SerializeField]
+    private Player _player;
     // Start is called before the first frame update
     void Start()
     {
-       
+        _player._maxAmmo += 2;
         SpawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<Transform>();
         StartCoroutine(WaveOneSpawnRoutine());
+        _enemy._enemyShieldPercent += 5;
+        _enemy._dodgeChancePercent += 5;
+        _upRightEnemy._enemyShieldPercent += 5;
+        _upRightEnemy._dodgeChancePercent += 5;
+        _upLeftEnemy._enemyShieldPercent += 5;
+        _upLeftEnemy._dodgeChancePercent += 5;
     }
 
     // Update is called once per frame
@@ -76,7 +90,7 @@ public class WaveFour : MonoBehaviour
             GameObject newEnemyDiveBomb = Instantiate(_diveBomb, posToSpawnDiveBomb, Quaternion.identity);
             newEnemyDiveBomb.transform.parent = _enemyContainer.transform;
 
-            Debug.LogError("inside the loop");
+          
             yield return new WaitForSeconds(3f);
         }
     }

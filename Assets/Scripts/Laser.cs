@@ -16,6 +16,11 @@ public class Laser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (this.tag == "BossLaserBeam")
+        {
+            AssignEnemyLaser();
+            return;
+        }
         if (_isEnemyLaser == false || _upEnemyLaser == true)
         {
             MoveUp();

@@ -24,6 +24,14 @@ public class UIManager : MonoBehaviour
     private Text _maxAmmoText;
     [SerializeField]
     private Slider _thrusterSlider;
+    [SerializeField]
+    private Text _congratsText;
+    [SerializeField]
+    private Enemy _enemy;
+    [SerializeField]
+    private Enemy _upRight;
+    [SerializeField]
+    private Enemy _upLeft;
 
     // Start is called before the first frame update
     void Start()
@@ -77,7 +85,7 @@ public class UIManager : MonoBehaviour
             _restartText.gameObject.SetActive(true);
             StartCoroutine(GameOverFlickerRoutine());
             _restartOkay = true;
-            //StartCoroutine(RestartLevelRoutine());
+      
         }
     }
 
@@ -97,18 +105,43 @@ public class UIManager : MonoBehaviour
 
             yield return new WaitForSeconds(0.5f);
         }
+    }
 
+    public void BossBeatenUI()
+    {
+        _congratsText.gameObject.SetActive(true);
+        StartCoroutine(CongratulationsFlickerRoutine());
+        _restartOkay = true;
+        _restartText.gameObject.SetActive(true);
+    }
 
+    IEnumerator CongratulationsFlickerRoutine()
+    {
+
+        while (true)
+        {
+
+            _congratsText.text = "CONGRATULATIONS!";
+            yield return new WaitForSeconds(0.5f);
+            _congratsText.text = "";
+            yield return new WaitForSeconds(0.5f);
+
+        }
 
     }
 
-
-    public void RestartLevel()
+        public void RestartLevel()
     {
 
         SceneManager.LoadScene("Game");
         _restartOkay = false;
-        
+        _enemy._dodgeChancePercent = 10;
+        _enemy._enemyShieldPercent = 10;
+        _upLeft._dodgeChancePercent = 10;
+        _upLeft._enemyShieldPercent = 10;
+        _upRight._dodgeChancePercent = 10;
+        _upRight._enemyShieldPercent = 10;
+
     }
 
 

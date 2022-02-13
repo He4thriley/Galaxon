@@ -10,16 +10,32 @@ public class WaveTwo : MonoBehaviour
     public GameObject _upLeft; 
     [SerializeField] private GameObject[] spawnPoints;
     private Transform SpawnPoint;
+    [SerializeField]
+    private Enemy _enemy;
+    [SerializeField]
+    private Enemy _upRightEnemy;
+    [SerializeField]
+    private Enemy _upLeftEnemy;
    
     public GameObject _enemyContainer;
     [SerializeField]
     private Text _waveTwoText;
+    [SerializeField]
+    private Player _player;
     // Start is called before the first frame update
     void Start()
     {
-    
+        _player._maxAmmo += 2;
         SpawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint").GetComponent<Transform>();
         StartCoroutine(WaveOneSpawnRoutine());
+        _enemy._enemyShieldPercent += 5;
+        _enemy._dodgeChancePercent += 5;
+        _upRightEnemy._enemyShieldPercent += 5;
+        _upRightEnemy._dodgeChancePercent += 5;
+        _upLeftEnemy._enemyShieldPercent += 5;
+        _upLeftEnemy._dodgeChancePercent += 5;
+
+
     }
 
     // Update is called once per frame
@@ -68,7 +84,7 @@ public class WaveTwo : MonoBehaviour
                 newEnemyUpLeft.transform.parent = _enemyContainer.transform;
             }
 
-            Debug.LogError("inside the loop");
+       
             yield return new WaitForSeconds(3f);
         }
 

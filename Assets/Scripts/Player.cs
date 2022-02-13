@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     private float _canFire = -1.0f;
     private float _fireRate = 0.3f;
     private bool _tripleShotActive = false;
-    private bool _beamActive = false;
+    public bool _beamActive = false;
     private bool _speedActive = false;
     private bool _shieldsActive = false;
     private int _shieldLives;
@@ -40,9 +40,15 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _ammo;
     [SerializeField]
-    private int _maxAmmo;
+    public int _maxAmmo;
     [SerializeField]
     private CameraShake _camera;
+    [SerializeField]
+    private Enemy _enemy;
+    [SerializeField]
+    private Enemy _upRight;
+    [SerializeField]
+    private Enemy _upLeft;
     [SerializeField]
     private GameObject _player;
     [SerializeField]
@@ -74,6 +80,9 @@ public class Player : MonoBehaviour
         _shield = GameObject.Find("Shield").GetComponent<SpriteRenderer>();
         _beam = GameObject.Find("BeamPrefab");
         _camera = GameObject.Find("Main Camera").GetComponent<CameraShake>();
+        _enemy = GameObject.Find("Enemy").GetComponent<Enemy>();
+        _upRight = GameObject.Find("Enemy").GetComponent<Enemy>();
+        _upLeft = GameObject.Find("Enemy").GetComponent<Enemy>();
         _thrusters = GameObject.Find("Thruster_Slider").GetComponent<Thrusters>();
         _deactivate = GameObject.Find("Diamond").GetComponent<EnemyHoming>();
         _waveOne = GameObject.Find("WaveOne").GetComponent<WaveOne>();
@@ -208,6 +217,13 @@ public class Player : MonoBehaviour
             playerDeath = true;
             transform.position = new Vector3(0f, 25f, 0f);
             _deactivate.playerExists = false;
+            _enemy._dodgeChancePercent = 10;
+            _enemy._enemyShieldPercent = 10;
+            _upLeft._dodgeChancePercent = 10;
+            _upLeft._enemyShieldPercent = 10;
+            _upRight._dodgeChancePercent = 10;
+            _upRight._enemyShieldPercent = 10;
+
             _spawnManager.OnPlayerDeath();
 
 
@@ -339,11 +355,11 @@ public class Player : MonoBehaviour
             _waveThree.gameObject.SetActive(true);
         }
         _uiManager.UpdateScore(_score);
-        if (_score == 180)
+        if (_score == 230)
         {
             _waveFour.gameObject.SetActive(true);
         }
-        if (_score == 240)
+        if (_score == 350)
         {
             _bossFight.gameObject.SetActive(true);
         }

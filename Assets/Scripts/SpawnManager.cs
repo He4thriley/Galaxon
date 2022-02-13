@@ -13,7 +13,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject[]  powerups;
 
-    private bool _stopSpawning = false;
+    public bool _stopSpawning = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +24,7 @@ public class SpawnManager : MonoBehaviour
 
     public void StartSpawning()
     {
-        //StartCoroutine(SpawnRoutine());
+       
         StartCoroutine(SpawnPowerupRoutine());
         StartCoroutine(SpawnAmmoHealthRoutine());
     }

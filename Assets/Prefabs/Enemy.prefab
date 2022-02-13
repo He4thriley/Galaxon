@@ -331,11 +331,11 @@ MonoBehaviour:
   _speed: 4
   _laserPrefab: {fileID: 432765062757587165, guid: aa7ed4b32d5bcf14db4984fa2fc36e11, type: 3}
   enemyID: 0
-  _enemyShieldPercent: 15
+  _enemyShieldPercent: 10
   _enemyShield: {fileID: 7345793646194440658}
   _playerDetectRange: 0
   rigidBody: {fileID: 1307305800821284344}
-  _dodgeChancePercent: 0
+  _dodgeChancePercent: 10
 --- !u!212 &-9212789239880817816
 SpriteRenderer:
   m_ObjectHideFlags: 0

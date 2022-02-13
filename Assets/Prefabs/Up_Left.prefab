@@ -227,10 +227,11 @@ MonoBehaviour:
   _speed: 4
   _laserPrefab: {fileID: 6708714953427293450, guid: a1207eea3a5efcf4d8b2ca58b9755c8e, type: 3}
   enemyID: 2
-  _enemyShieldPercent: 20
+  _enemyShieldPercent: 10
   _enemyShield: {fileID: 1939811280}
   _playerDetectRange: 0
   rigidBody: {fileID: 0}
+  _dodgeChancePercent: 10
 --- !u!61 &8076503658072275169
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -288,8 +289,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
